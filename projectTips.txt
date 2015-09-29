@@ -1,0 +1,16 @@
+
+------------------ metaq part ------------------
+each spring container is a consumer, and each jvm can only exists one container/consumer
+
+
+
+
+------------------ dubbo part --------------------
+there's a problem, for example
+step1, A async call B
+step2, B sync call C
+
+result: B can not get return value from C
+
+solution1: let B async call C
+solution2: let B sync call C.echo at first, then sync call C again.

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <import resource="metaq-share.xml"/>
+    <!--  topics to be subscribed. -->
+    <bean id = "testTopic" class="com.taobao.metamorphosis.client.extension.spring.MetaqTopic">
+        <!-- consumer group -->
+        <property name="group" value="testGroup"/>
+        <!--  topic -->
+        <property name="topic" value="mytopic"/>
+        <!--  max buffer size to fetch messages -->
+        <property name="maxBufferSize" value="16384"/>
+        <property name="maxDelayFetchTimeInMills" value="10"/>
+    </bean>
+    <!--  message listener -->
+    <bean id= "messageListener" class="com.lp.techDemo.metaq.messageConsumer.DemoMessageListener">
+        <!--  threads to process these messages. -->
+        <property name="processThreads" value="1"/>
+    </bean>
+    <!--  listener container to subscribe topics, one container is a consumer -->
+    <bean id ="listenerContainer" class="com.taobao.metamorphosis.client.extension.spring.MessageListenerContainer"> 
+         <property name="messageSessionFactory" ref="sessionFactory"/>
+         <property name="messageBodyConverter" ref="messageBodyConverter"/>
+         <property name="subscribers">
+             <map>
+                 <entry key-ref="testTopic" value-ref="messageListener"/>
+             </map>
+         </property>
+    </bean>
+    
+    
+</beans>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <bean id="propertyConfigurer"  
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+        <property name="location" value="classpath:zk.properties"/>  
+    </bean>  
+    <!--  message session factory -->
+    <bean id="sessionFactory" class="com.taobao.metamorphosis.client.extension.spring.MetaqMessageSessionFactoryBean">
+        <property name="zkConnect" value="${zk.zkConnect}"/>
+        <property name="zkSessionTimeoutMs" value="30000"/>
+        <property name="zkConnectionTimeoutMs" value="30000"/>
+        <property name="zkSyncTimeMs" value="5000"/>
+    </bean>
+    <!--  message body converter using java serialization. -->
+    <bean id="messageBodyConverter" class="com.taobao.metamorphosis.client.extension.spring.JavaSerializationMessageBodyConverter"/>
+    
+</beans>

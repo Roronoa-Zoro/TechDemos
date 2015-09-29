@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans        
+    http://www.springframework.org/schema/beans/spring-beans.xsd        
+    http://code.alibabatech.com/schema/dubbo        
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+ 
+    <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+    <dubbo:application name="consumer-of-helloworld-app"  />
+ 
+    <!-- 使用multicast广播注册中心暴露发现服务地址 
+    <dubbo:registry address="multicast://224.5.6.7:1234" />
+ 	-->
+ 	<!-- 生成远程服务代理，可以和本地bean一样使用demoService 
+    <dubbo:reference id="demoService" interface="com.lp.techDemo.dubbo.sharedService.RemoteService" />
+    -->
+    
+    
+ 	<!-- 直连方式 
+ 	<dubbo:registry address="N/A" /> 
+ 	<dubbo:reference 
+        id="demoService" 
+        interface="com.lp.techDemo.dubbo.sharedService.RemoteService"
+        url="dubbo://127.0.0.1:20880/com.lp.techDemo.dubbo.sharedService.RemoteService"/>
+ 	-->
+ 	<!-- 使用zookeeper注册中心暴露服务地址 -->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181" />
+    <!-- http protocol -->
+    <dubbo:protocol name="http" port="8083" accesslog="E:/log/dubbo/remote-access.log"/>
+ 	<dubbo:reference 
+        id="demoService" 
+        interface="com.lp.techDemo.dubbo.sharedService.RemoteService"
+        timeout="30000"/>
+    
+ 
+</beans>
