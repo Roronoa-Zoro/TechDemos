@@ -118,7 +118,10 @@ public class DemoTest {
 //			
 //		});
 //	}
+		
+		es.shutdown();
 	}
+	
 	@Test
 	public void threadPoolMonitor() throws IOException, InterruptedException, ExecutionException{
 
@@ -128,12 +131,15 @@ public class DemoTest {
 				new ThreadFactoryMonitor(),
 				new BlockingPolicy());
 		List<FutureTask<Integer>> futures = new ArrayList<>();
+		
 		new Thread(new Runnable(){
 			
 			@Override
 			public void run() {
 				while (true){
-					System.err.println("thread pool number-------------------------------->" + tpe.getActiveCount());
+					int activeThread = tpe.getActiveCount();
+					System.err.println("thread pool number-------------------------------->" + activeThread);
+					
 					try {
 						TimeUnit.SECONDS.sleep(1l);
 					} catch (InterruptedException e) {
@@ -156,8 +162,8 @@ public class DemoTest {
 			Integer result = ft.get();
 			System.err.println("result=========================="+result);
 		}
-		System.err.println("getActiveCount=========================="+tpe.getActiveCount());
-		System.in.read();
+//		System.in.read();
+		tpe.shutdown();
 	}
 	
 	private AtomicInteger ai = new AtomicInteger();
