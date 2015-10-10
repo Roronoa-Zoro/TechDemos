@@ -24,7 +24,9 @@
 			</value>
 		</property>
 	</bean>
-	
+	<bean id="propertyOverrider" class="com.lp.techDemo.util.PropertyOverrider">
+		<property name="location" value="encrypt.properties" />
+	</bean>
 	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
     </bean>
     
@@ -32,7 +34,6 @@
         <property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
         <property name="url" value="${jdbc.url}" />
         <property name="username" value="${jdbc.username}" />
-        <property name="password" value="${jdbc.password}" />
 
         <property name="filters" value="${jdbc.filters}" />
         <property name="proxyFilters">

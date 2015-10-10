@@ -26,7 +26,9 @@ public class DaoTest {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("mybatis-application.xml");
 		EmployeeDao dao = (EmployeeDao) ac.getBean("employeeDao");
 		Employees e = dao.getEmployee(100);
+		assertNotNull(e);
 		System.err.println(e);
+		
 	}
 
 }
