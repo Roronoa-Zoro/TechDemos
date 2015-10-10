@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Test;
 
+import com.lp.techDemo.db.model.Employees;
 import com.lp.techDemo.metaq.entity.MetaqDemoEntity;
 import com.lp.techDemo.util.ToStringUtil;
 
@@ -202,7 +203,7 @@ public class DemoTest {
 	
 	@Test
 	public void toStringTest(){
-		String str = ToStringUtil.generateToString(MetaqDemoEntity.class);
+		String str = ToStringUtil.generateToString(Employees.class);
 		assertNotNull(str);
 		System.err.println(str);
 	}
