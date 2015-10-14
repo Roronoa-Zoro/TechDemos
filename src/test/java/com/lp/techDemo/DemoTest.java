@@ -25,7 +25,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Test;
 
 import com.lp.techDemo.db.model.Employees;
-import com.lp.techDemo.metaq.entity.MetaqDemoEntity;
 import com.lp.techDemo.util.ToStringUtil;
 
 public class DemoTest {
@@ -33,24 +32,9 @@ public class DemoTest {
 	@Test
 	public void test() {
 		int[] array = new int[]{430049,
-				560113,
-				840015,
-				974565,
-				1196092,
-				1521598,
-				1878782,
-				2371855,
-				3186150,
-				4324529,
-				5622884,
-				7750188,
-				8914282,
-				9211501,
-				12480134,
-				14024338,
-				16294490,
-				18614116,
-				21375682};
+				560113,840015,974565,1196092,1521598,1878782,2371855,
+				3186150,4324529,5622884,7750188,8914282,9211501,12480134,
+				14024338,16294490,18614116,21375682};
 		long[] ta = new long[array.length];
 		long current = 0l;
 		for (int i = 0; i < array.length; i++){

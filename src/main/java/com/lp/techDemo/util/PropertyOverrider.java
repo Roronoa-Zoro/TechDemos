@@ -11,7 +11,7 @@ import org.springframework.beans.factory.config.PropertyOverrideConfigurer;
 
 public class PropertyOverrider extends PropertyOverrideConfigurer{
 
-	private static final Logger logger = LoggerFactory.getLogger(PropertyOverrider.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PropertyOverrider.class);
 	@Override
 	protected void processProperties(ConfigurableListableBeanFactory beanFactory, Properties props)
 			throws BeansException {
@@ -24,7 +24,7 @@ public class PropertyOverrider extends PropertyOverrideConfigurer{
 				decryptedValue = EncryptUtil.decrypt(value);
 				props.setProperty(key, decryptedValue);
 			} catch (Exception e) {
-				logger.error("decrypt fails", e);
+				LOGGER.error("decrypt fails", e);
 				throw new RuntimeException(e);
 			}
 			

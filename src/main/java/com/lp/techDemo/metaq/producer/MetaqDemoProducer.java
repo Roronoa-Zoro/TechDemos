@@ -1,7 +1,5 @@
 package com.lp.techDemo.metaq.producer;
 
-import java.io.BufferedReader;
-
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.lp.techDemo.metaq.entity.MetaqDemoEntity;
@@ -13,7 +11,6 @@ import com.taobao.metamorphosis.client.extension.spring.MessageBuilder;
 import com.taobao.metamorphosis.client.extension.spring.MetaqTemplate;
 import com.taobao.metamorphosis.client.producer.MessageProducer;
 import com.taobao.metamorphosis.client.producer.SendResult;
-import com.taobao.metamorphosis.exception.MetaClientException;
 import com.taobao.metamorphosis.utils.ZkUtils.ZKConfig;
 
 public class MetaqDemoProducer {

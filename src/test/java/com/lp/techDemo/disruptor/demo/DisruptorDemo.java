@@ -1,6 +1,5 @@
 package com.lp.techDemo.disruptor.demo;
 
-import static org.junit.Assert.*;
 
 import java.nio.ByteBuffer;
 import java.util.Date;
@@ -17,7 +16,6 @@ import com.lp.techDemo.disruptor.entity.LogEvent;
 import com.lp.techDemo.disruptor.entity.LogEventFactory;
 import com.lp.techDemo.disruptor.entity.LongEvent;
 import com.lp.techDemo.disruptor.entity.LongEventFactory;
-import com.lp.techDemo.disruptor.handler.LogHandlerWithMethodName;
 import com.lp.techDemo.disruptor.handler.LongEventConsumer;
 import com.lp.techDemo.disruptor.handler.LongEventConsumer2;
 import com.lp.techDemo.disruptor.handler.LongEventHandler;
