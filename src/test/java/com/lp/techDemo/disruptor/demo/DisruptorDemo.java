@@ -41,6 +41,7 @@ public class DisruptorDemo {
 		//ring buffer size
 		int bufferSize = 1024;
 		
+		//executor will invoke consumers
 		disruptor = 
 				new Disruptor<>(factory, bufferSize, executor, ProducerType.SINGLE, new SleepingWaitStrategy());
 	}
