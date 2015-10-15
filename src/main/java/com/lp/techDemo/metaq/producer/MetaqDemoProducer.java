@@ -1,7 +1,11 @@
 package com.lp.techDemo.metaq.producer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.lp.techDemo.http.message.MessageEntity;
+import com.lp.techDemo.message.provider.MessagePublisher;
 import com.lp.techDemo.metaq.entity.MetaqDemoEntity;
 import com.taobao.metamorphosis.Message;
 import com.taobao.metamorphosis.client.MessageSessionFactory;
@@ -15,6 +19,9 @@ import com.taobao.metamorphosis.utils.ZkUtils.ZKConfig;
 
 public class MetaqDemoProducer {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(MetaqDemoProducer.class);
+	private MetaqTemplate template;
+	
 	public static void main(String[] args) throws Exception {
 //		sendWithPureMetaq();
 		sendWithSpring();
@@ -57,7 +64,7 @@ public class MetaqDemoProducer {
 			try {
 				mt.send(MessageBuilder.withTopic("mytopic").withBody(entity));
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				LOGGER.error("send to mytopic fails", e);
 				e.printStackTrace();
 			}
 		}

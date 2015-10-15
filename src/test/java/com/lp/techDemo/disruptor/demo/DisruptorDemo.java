@@ -12,23 +12,35 @@ import org.junit.Test;
 import com.lmax.disruptor.SleepingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import com.lp.techDemo.disruptor.consumer.DisruptorEntityConsumer;
+import com.lp.techDemo.disruptor.entity.DisruptorEntity;
+import com.lp.techDemo.disruptor.entity.DisruptorEntityFactory;
 import com.lp.techDemo.disruptor.entity.LogEvent;
 import com.lp.techDemo.disruptor.entity.LogEventFactory;
 import com.lp.techDemo.disruptor.entity.LongEvent;
 import com.lp.techDemo.disruptor.entity.LongEventFactory;
+import com.lp.techDemo.disruptor.handler.DisruptorEntityHandler;
 import com.lp.techDemo.disruptor.handler.LongEventConsumer;
 import com.lp.techDemo.disruptor.handler.LongEventConsumer2;
 import com.lp.techDemo.disruptor.handler.LongEventHandler;
+import com.lp.techDemo.disruptor.producer.DisruptorEntityProducer;
 import com.lp.techDemo.disruptor.producer.LongEventProducerWithTranslator;
+import com.lp.techDemo.http.message.MessageEntity;
+import com.lp.techDemo.http.message.listener.GeneralMessageConsumer;
+import com.lp.techDemo.message.provider.MessagePublisher;
 
 public class DisruptorDemo {
 
 	Disruptor<LongEvent> disruptor;
+	Disruptor<MessageEntity> disruptor2;
 	
 	@After
 	public void closeDisruptor(){
 		if (disruptor != null){
 			disruptor.shutdown();
+		}
+		if (disruptor2 != null){
+			disruptor2.shutdown();
 		}
 	}
 	
@@ -41,6 +53,18 @@ public class DisruptorDemo {
 		
 		//executor will invoke consumers
 		disruptor = 
+				new Disruptor<>(factory, bufferSize, executor, ProducerType.SINGLE, new SleepingWaitStrategy());
+	}
+	
+	private void buildDisruptor2(){
+		Executor executor = Executors.newFixedThreadPool(1);
+		DisruptorEntityFactory factory = new DisruptorEntityFactory();
+		
+		//ring buffer size
+		int bufferSize = 1024;
+		
+		//executor will invoke consumers
+		disruptor2 = 
 				new Disruptor<>(factory, bufferSize, executor, ProducerType.SINGLE, new SleepingWaitStrategy());
 	}
 	
@@ -81,6 +105,17 @@ public class DisruptorDemo {
         }
 	}
 	
+	private void sendEvent2(){
+		disruptor2.start();
+		//general sender
+		MessagePublisher publisher = new DisruptorEntityProducer(disruptor2.getRingBuffer());
+        for (long l = 0; l <= 100; l++){
+            DisruptorEntity de = new DisruptorEntity();
+            de.setContent("content-" + l);
+            publisher.publishMessage(de);
+        }
+	}
+	
 	@Test
 	public void calculateTime(){
 		Executor executor = Executors.newFixedThreadPool(2);
@@ -98,6 +133,15 @@ public class DisruptorDemo {
 		
 //		disruptor1.handleEventsWith(new LogHandlerWithMethodName(null), new LogHandlerWithMethodName());
 		
+	}
+	
+	@Test
+	public void testDisruptorMessageService() throws InterruptedException {
+		buildDisruptor2();
+		
+		GeneralMessageConsumer gmc = new DisruptorEntityConsumer(disruptor2);
+		gmc.onMessageReceive();
+		sendEvent2();
 	}
 
 }
