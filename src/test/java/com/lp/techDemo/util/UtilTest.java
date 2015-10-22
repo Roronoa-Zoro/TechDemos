@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.lp.techDemo.db.model.Employees;
+
 public class UtilTest {
 
 	@BeforeClass
@@ -28,4 +30,10 @@ public class UtilTest {
         System.out.println("明文:" + jm);
 	}
 
+	@Test
+	public void toStringTest(){
+		String str = ToStringUtil.generateToString(Employees.class);
+		assertNotNull(str);
+		System.err.println(str);
+	}
 }

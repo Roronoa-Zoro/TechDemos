@@ -1,7 +1,5 @@
 package com.lp.techDemo;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -23,9 +21,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Test;
-
-import com.lp.techDemo.db.model.Employees;
-import com.lp.techDemo.util.ToStringUtil;
 
 public class DemoTest {
 
@@ -185,10 +180,5 @@ public class DemoTest {
 		
 	}
 	
-	@Test
-	public void toStringTest(){
-		String str = ToStringUtil.generateToString(Employees.class);
-		assertNotNull(str);
-		System.err.println(str);
-	}
+	
 }
