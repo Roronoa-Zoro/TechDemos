@@ -14,3 +14,14 @@ result: B can not get return value from C
 
 solution1: let B async call C
 solution2: let B sync call C.echo at first, then sync call C again.
+
+---------------- storm
+1.bolt need to invoke collector.ack(tuple), then spout's ack() method will be invoked
+2.fieldsGrouping, same word will be sent to same bolt, but bolt can receive different words, these words are different
+for instance:
+word list: one, two, three, four, five
+bolt thread: we have to bolt running
+valid result: one, two, three will only reach at bolt-1, and four, five will only reach bolt-2
+task means thread
+worker mean jvm instance
+
