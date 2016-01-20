@@ -60,7 +60,8 @@
 
 	<context:annotation-config />
 	<context:spring-configured />
-	
+	<context:component-scan base-package="com.lp.techDemo.db">
+	</context:component-scan>
 	<!-- myBaits配置 -start -->
 	
 	<bean id="transactionManager"
