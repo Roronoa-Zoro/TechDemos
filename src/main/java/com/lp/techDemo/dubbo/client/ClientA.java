@@ -21,15 +21,16 @@ public class ClientA extends AbstractClient {
 	@Override
 	protected void doLogic() {
 		AService as = (AService) context.getBean("aService");
-		as.doInA();
-		Future<String> f = RpcContext.getContext().getFuture();
-		try {
-			String result = f.get();
-			System.err.println("================get result from a service via async way ->" + result);
-		} catch (InterruptedException | ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String s = as.doInA();
+		System.err.println("sssssssssssss"+s);
+//		Future<String> f = RpcContext.getContext().getFuture();
+//		try {
+//			String result = f.get();
+//			System.err.println("================get result from a service via async way ->" + result);
+//		} catch (InterruptedException | ExecutionException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 	}
 	

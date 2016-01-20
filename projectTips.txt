@@ -25,3 +25,18 @@ valid result: one, two, three will only reach at bolt-1, and four, five will onl
 task means thread
 worker mean jvm instance
 
+--------------- spring transaction
+<!-- 第一种配置事务的方式 ，tx-->  
+<tx:advice id="txadvice" transaction-manager="transactionManager">  
+    <tx:attributes>  
+        <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception" />  
+        <tx:method name="modify*" propagation="REQUIRED" rollback-for="Exception" />  
+        <tx:method name="del*" propagation="REQUIRED" rollback-for="Exception"/>  
+        <tx:method name="*" propagation="REQUIRED" read-only="true"/>  
+    </tx:attributes>  
+</tx:advice>  
+  
+<aop:config>  
+    <aop:pointcut id="daoMethod" expression="execution(* com.dao.*.*(..))"/>  
+    <aop:advisor pointcut-ref="daoMethod" advice-ref="txadvice"/>  
+</aop:config>  

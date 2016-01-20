@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:cache="http://www.hundsun.com/schema/cache"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+	http://www.hundsun.com/schema/cache http://www.hundsun.com/schema/cache/spring-cache.xsd"
+	>
+
+	<bean id="loader" 
+		class="com.lp.techDemo.queue.data.impl.DefaultDataLoader" 
+		init-method="loadData" >
+		<property name="dr" ref="firstLevelRouter" />
+	</bean>
+	
+	<bean id="firstLevelConsumer" 
+		class="com.lp.techDemo.queue.data.impl.DefaultDataConsumer" 
+		init-method="consumeData" >
+		<property name="queueName" value="firstLevel" />
+		<property name="dr" ref="secondLevelRouter" />
+		<property name="consumerName" value="firstLevelConsumer" />
+	</bean>
+	
+	<bean id="firstLevelRouter" class="com.lp.techDemo.queue.data.impl.DefaultDataRouter" >
+		<property name="queueName" value="firstLevel" />
+	</bean>
+	
+	<bean id="secondLevelConsumer" 
+		class="com.lp.techDemo.queue.data.impl.DefaultDataConsumer" 
+		init-method="consumeData" >
+		<property name="queueName" value="secondLevel" />
+		<property name="consumerName" value="secondLevelConsumer" />
+	</bean>
+	
+	<bean id="secondLevelRouter" class="com.lp.techDemo.queue.data.impl.DefaultDataRouter" >
+		<property name="queueName" value="secondLevel" />
+	</bean>
+	
+</beans>

@@ -20,10 +20,21 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.Resource;
+
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
 
-public class DemoTest {
+import com.lp.techDemo.db.dao.EmployeeDao;
+import com.lp.techDemo.db.model.Employees;
 
+@ContextConfiguration(locations={"classpath:spring-profile.xml"})
+public class DemoTest extends AstractTestCase{
+
+	@Resource
+	private EmployeeDao ed;
 	@Test
 	public void test() {
 		int[] array = new int[]{430049,
@@ -178,6 +189,11 @@ public class DemoTest {
 			}
 		}
 		
+	}
+	
+	@Test
+	public void testProfile() {
+		ed.updateObj(new Employees());
 	}
 	
 	
