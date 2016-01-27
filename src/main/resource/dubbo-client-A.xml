@@ -25,7 +25,7 @@
         timeout="1000000"
         interface="com.lp.techDemo.dubbo.sharedService.AService"
         url="dubbo://127.0.0.1:20881/com.lp.techDemo.dubbo.sharedService.AService"
-        async="true"/>
+        />
     
  
 </beans>

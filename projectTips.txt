@@ -30,3 +30,20 @@ client create concrete event
 EventInvoker fire event(actually, event flow to a queue)
 TaskMonitor loop target event queue and dispatch to worker pool
 TaskExecutor is a worker pool and do read task
+
+--------------- spring transaction
+<!-- 第一种配置事务的方式 ，tx-->  
+<tx:advice id="txadvice" transaction-manager="transactionManager">  
+    <tx:attributes>  
+        <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception" />  
+        <tx:method name="modify*" propagation="REQUIRED" rollback-for="Exception" />  
+        <tx:method name="del*" propagation="REQUIRED" rollback-for="Exception"/>  
+        <tx:method name="*" propagation="REQUIRED" read-only="true"/>  
+    </tx:attributes>  
+</tx:advice>  
+  
+<aop:config>  
+    <aop:pointcut id="daoMethod" expression="execution(* com.dao.*.*(..))"/>  
+    <aop:advisor pointcut-ref="daoMethod" advice-ref="txadvice"/>  
+</aop:config>  
+

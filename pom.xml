@@ -125,6 +125,13 @@
 			<artifactId>spring-beans</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
 		<!-- metaq -->
 		<dependency>
 			<groupId>com.taobao.metamorphosis</groupId>
@@ -180,11 +187,7 @@
             <version>${mybatisSpring.version}</version>
         </dependency>
         
-        <dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc5</artifactId>
-			<version>11.2.0.3.0</version>
-		</dependency>
+        
 		
 		<!-- AspectJ -->
 		<dependency>
@@ -204,16 +207,35 @@
 			<version>1.10</version>
 		</dependency>
 		<dependency>
+		    <groupId>com.taobao.metamorphosis</groupId>
+		    <artifactId>metamorphosis-storm-spout</artifactId>
+		    <version>1.4.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.7</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.apache.storm</groupId>
 			<artifactId>storm-core</artifactId>
 			<version>0.9.5</version>
 			<scope>provided</scope>
 		</dependency>
 		
+		<!-- <dependency>
+		    <groupId>com.rabbitmq</groupId>
+		    <artifactId>amqp-client</artifactId>
+		    <version>3.5.6</version>
+		</dependency> -->
+
+		
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>2.2.1</version>
 		</dependency>
+
 	</dependencies>
 </project>
