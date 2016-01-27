@@ -25,3 +25,8 @@ valid result: one, two, three will only reach at bolt-1, and four, five will onl
 task means thread
 worker mean jvm instance
 
+----------------- event part
+client create concrete event
+EventInvoker fire event(actually, event flow to a queue)
+TaskMonitor loop target event queue and dispatch to worker pool
+TaskExecutor is a worker pool and do read task
