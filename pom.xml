@@ -34,6 +34,7 @@
 		<mortbay.version>6.1.25</mortbay.version>
 		<beanutils.version>1.9.2</beanutils.version>
 		<slf4j.version>1.7.12</slf4j.version>
+		<quartz.version>2.2.2</quartz.version>
 	</properties>
 
 	
@@ -234,7 +235,7 @@
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>2.2.1</version>
+			<version>${quartz.version}</version>
 		</dependency>
 
 	</dependencies>
