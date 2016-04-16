@@ -14,4 +14,6 @@ public interface ScheduleService {
 	JobVO pauseJob(String jobName, String jobGroup) throws Exception;
 	
 	JobVO resumeJob(String jobName, String jobGroup) throws Exception;
+	
+	JobVO rescheduleJob(String jobName, String jobGroup) throws Exception;
 }

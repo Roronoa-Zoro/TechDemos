@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import com.lp.techDemo.schedule.service.ScheduleService;
 import com.lp.techDemo.schedule.vo.JobVO;
+import com.lp.techDemo.schedule.vo.ResponseEnum;
+import com.lp.techDemo.schedule.vo.ResponseVO;
 
 public class ScheduleServiceImpl implements ScheduleService {
 
@@ -41,6 +43,22 @@ public class ScheduleServiceImpl implements ScheduleService {
 		}
 		log.info("get all jobs done");
 		return jobList;
+	}
+	
+	
+	public ResponseVO<List<JobVO>> showAllScheduleJobs() throws Exception {
+		GroupMatcher<JobKey> matcher = GroupMatcher.anyJobGroup();
+		Set<JobKey> jobKeys = scheduler.getJobKeys(matcher);
+		List<JobVO> jobList = new ArrayList<>();
+		for (JobKey jobKey : jobKeys) {
+	    	JobVO job = showSpecificJob(jobKey.getName(), jobKey.getGroup(), jobKey);
+		    jobList.add(job);
+		}
+		log.info("get all jobs done");
+		ResponseVO<List<JobVO>> res = new ResponseVO<>();
+		res.setResponseObject(jobList);
+		res.setResponseState(ResponseEnum.Success);
+		return res;
 	}
 
 	@Override
@@ -113,6 +131,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 	    }
 		
 		return job;
+	}
+
+	@Override
+	public JobVO rescheduleJob(String jobName, String jobGroup) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

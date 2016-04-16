@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:cache="http://www.hundsun.com/schema/cache"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+	http://www.hundsun.com/schema/cache http://www.hundsun.com/schema/cache/spring-cache.xsd"
+	>
+	<!-- 流程
+		data task 是真正工作的class
+		-- 有真正实现logic的class
+		-- 有monitor class, 当真是的逻辑class执行完后触发事件, 关闭thread pool
+		data processor 用于管理生命周期
+		
+		process unit
+		-- data reader 读数据
+		-- 然后逻辑处理
+		-- 然后data router把msg流转到下一个队列
+		-- 重复上述过程
+		
+		配置多个process unit,实现数据异步链式处理
+	 -->
+	<bean id="jdbcDataReader" class="com.lp.recon.dataReader.JdbcDataReader" />
+	<bean id="queueDataReader" class="com.lp.recon.dataReader.QueueDataReader">
+		<property name="queueName" value="firstQueue" />
+		<property name="batchSize" value="100" />
+	</bean>
+	
+	<bean id="queueDataRouter" class="com.lp.recon.dataRouter.QueueDataRouter">
+		<property name="queueName" value="firstQueue" />
+	</bean>
+	
+	<bean id="stopThreadPoolListener" class="com.lp.recon.event.LifecycleEventListener" />
+	
+	<bean id="jdbcDataTask" class="com.lp.recon.dataTask.JdbcDataTask">
+		<property name="dataReader" ref="jdbcDataReader" />
+		<property name="dataRouter" ref="queueDataRouter" />
+		<property name="done" ref="jdbcCountdown"/>
+	</bean>
+	<bean id="jdbcMonitorTask" class="com.lp.recon.dataTask.MonitorDataTask">
+		<property name="event" ref="jdbcDataProcessor" />
+		<property name="done" ref="jdbcCountdown"/>
+	</bean>
+	<bean id="jdbcCountdown" class="java.util.concurrent.CountDownLatch">
+		<constructor-arg index="0" value="1" />
+	</bean>
+	
+	<bean id="jdbcDataProcessor" class="com.lp.recon.dataProcessor.JdbcDataProcessor" init-method="init">
+		<property name="coreSize" value="1" />
+		<property name="lifecycleEventListener" ref="stopThreadPoolListener" />
+		<property name="dataTasks">
+			<list>
+				<ref bean="jdbcDataTask"/>
+				<ref bean="jdbcMonitorTask"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="queueDataTask" class="com.lp.recon.dataTask.QueueDataTask">
+		<property name="dataReader" ref="queueDataReader" />
+		<property name="done" ref="queueCountdown"/>
+	</bean>
+	<bean id="queueMonitorTask" class="com.lp.recon.dataTask.MonitorDataTask">
+		<property name="event" ref="queueDataProcessor" />
+		<property name="done" ref="queueCountdown"/>
+	</bean>
+	<bean id="queueCountdown" class="java.util.concurrent.CountDownLatch">
+		<constructor-arg index="0" value="1" />
+	</bean>
+	
+	<bean id="queueDataProcessor" class="com.lp.recon.dataProcessor.QueueDataProcessor" init-method="init">
+		<property name="coreSize" value="4" />
+		<property name="lifecycleEventListener" ref="stopThreadPoolListener" />
+		<property name="dataTasks">
+			<list>
+				<ref bean="queueDataTask"/>
+				<ref bean="queueMonitorTask"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="bootstrap" class="com.lp.recon.Bootstrap">
+		<property name="workers">
+			<list>
+				<ref bean="jdbcDataProcessor"/>
+				<ref bean="queueDataProcessor"/>
+			</list>
+		</property>
+	</bean>
+</beans>
