@@ -13,6 +13,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.1.6.RELEASE</spring.version>
+		<spring.retry.version>1.1.2.RELEASE</spring.retry.version>
 		<aspectj.version>1.7.1</aspectj.version>
 		<mybatis.version>3.1.1</mybatis.version>
 		<mybatisSpring.version>1.1.1</mybatisSpring.version>
@@ -24,18 +25,26 @@
 		<mongodb-client.version>2.11.2</mongodb-client.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<commonLang.version>2.6</commonLang.version>
-		<commonBeanUtil.version>1.8.3</commonBeanUtil.version>
-		<commons-codec.version>1.8</commons-codec.version>
+		<commons-lang.version>3.4</commons-lang.version>
+		<commons-codec.version>1.10</commons-codec.version>
+		<commons-beanutils.version>1.9.2</commons-beanutils.version>
+		<commons-io.version>2.5</commons-io.version>
 		<log4j.version>1.2.16</log4j.version>
+		<slf4j.version>1.7.12</slf4j.version>
 		<metaq.version>1.4.6.2</metaq.version>
 		<jsp.version>6.0.36</jsp.version>
 		<jetty.version>9.3.0.M1</jetty.version>
 		<mortbay.version>6.1.25</mortbay.version>
-		<beanutils.version>1.9.2</beanutils.version>
-		<slf4j.version>1.7.12</slf4j.version>
+		
+		<junit.version>4.12</junit.version>
+		<velocity.version>1.7</velocity.version>
 		<quartz.version>2.2.2</quartz.version>
-		<spring.retry.version>1.1.2.RELEASE</spring.retry.version>
+		<guava.version>19.0</guava.version>
+		<dubbo.version>2.5.4-SNAPSHOT</dubbo.version>
+		<rocketmq.version>3.4.6</rocketmq.version>
+		<jms.version>2.0.1</jms.version>
+		<activemq.client.version>5.13.3</activemq.client.version>
+		<mockito.version>1.10.19</mockito.version>
 	</properties>
 
 	
@@ -43,7 +52,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -56,7 +65,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo</artifactId>
-			<version>2.5.3</version>
+			<version>${dubbo.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>spring</artifactId>
@@ -148,6 +157,10 @@
 					<artifactId>log4j</artifactId>
 					<groupId>log4j</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>commons-lang</artifactId>
+					<groupId>commons-lang</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<!-- metaq -->
@@ -169,11 +182,7 @@
 			<version>${mortbay.version}</version>
 		</dependency>
 		<!-- jetty, and for http protocal -->
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>${beanutils.version}</version>
-		</dependency>
+		
 		
 		<dependency>
             <groupId>com.alibaba</groupId>
@@ -210,8 +219,25 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.10</version>
+			<version>${commons-codec.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-beanutils.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang.version}</version>
+		</dependency>
+
+		
 		<dependency>
 		    <groupId>com.taobao.metamorphosis</groupId>
 		    <artifactId>metamorphosis-storm-spout</artifactId>
@@ -220,7 +246,13 @@
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
-			<version>1.7</version>
+			<version>${velocity.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-lang</artifactId>
+					<groupId>commons-lang</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -228,6 +260,12 @@
 			<artifactId>storm-core</artifactId>
 			<version>0.9.5</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-lang</artifactId>
+					<groupId>commons-lang</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- <dependency>
@@ -236,12 +274,53 @@
 		    <version>3.5.6</version>
 		</dependency> -->
 
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.6.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.9</version>
+		</dependency>
+		
+
 		
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>${quartz.version}</version>
 		</dependency>
-
+		
+		<!-- http://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>${guava.version}</version>
+		</dependency>
+		<!-- http://mvnrepository.com/artifact/com.alibaba.rocketmq/rocketmq-client -->
+		<dependency>
+		    <groupId>com.alibaba.rocketmq</groupId>
+		    <artifactId>rocketmq-client</artifactId>
+		    <version>${rocketmq.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>javax.jms</groupId>
+		    <artifactId>javax.jms-api</artifactId>
+		    <version>${jms.version}</version>
+		</dependency>
+		<!-- http://mvnrepository.com/artifact/org.apache.activemq/activemq-client -->
+		<dependency>
+		    <groupId>org.apache.activemq</groupId>
+		    <artifactId>activemq-client</artifactId>
+		    <version>${activemq.client.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${mockito.version}</version>
+		</dependency>
 	</dependencies>
 </project>
